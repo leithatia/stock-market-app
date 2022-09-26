@@ -5,7 +5,7 @@ ruby "3.1.2"
 
 gem 'bootstrap', '~> 5.2', '>= 5.2.1'
 gem 'jquery-rails'
-gem 'stock_quote', '~> 3.0'
+gem 'nokogiri', '~> 1.13', '>= 1.13.8'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4"
