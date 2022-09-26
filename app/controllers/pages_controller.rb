@@ -1,6 +1,7 @@
 # Home controller
 class PagesController < ApplicationController
   def index
+    @user = nil
     read_stocks
   end
 
