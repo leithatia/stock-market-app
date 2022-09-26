@@ -1,0 +1,12 @@
+<h1>Home#index</h1>
+<p>Find me in app/views/home/index.html.erb</p>
+
+<% @stocks.each do |stock| %>
+  <ul>
+    <li><%= image_tag "#{stock[:logo_URL]}" %> <%= "#{stock[:name]}" %></li>
+    <li><%= "Price: #{stock[:price]}" %></li>
+    <li><%= "1D Change (%): #{stock[:change_percent]}" %></li>
+    <li><%= "1D Change (USD): #{stock[:change_currency]}" %></li>
+  </ul>
+
+<% end %>
