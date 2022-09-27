@@ -1,5 +1,7 @@
 # Home controller
 class PagesController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @user = nil
     read_stocks
