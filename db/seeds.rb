@@ -1,10 +1,8 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+require 'csv'
+
+# csv_text = File.read(Rails.root.join('lib', 'seeds', 'nasdaq_screener_1664808689118.csv'))
+# puts csv_text
+
 puts 'Destroying DB records...'
 Portfolio.destroy_all
 User.destroy_all
@@ -15,24 +13,20 @@ leith = User.create!(username: 'Leith', email: 'leith.atia@gmail.com', password:
 jim = User.create!(username: 'Jim', email: 'jim@gmail.com', password: 'password')
 
 puts 'Creating stocks...'
-aapl = Stock.create!(ticker: 'AAPL')
-msft = Stock.create!(ticker: 'MSFT')
-tsla = Stock.create!(ticker: 'TSLA')
-hpe = Stock.create!(ticker: 'HPE')
-sony = Stock.create!(ticker: 'SONY')
-race = Stock.create!(ticker: 'RACE')
+CSV.foreach('lib/seeds/nasdaq_screener_1664808689118.csv', headers: true) do |row|
+  Stock.create!(symbol: row[0].to_s, name: row[1].to_s)
+end
 
-puts 'Building portfolios...'
-leith.stocks << aapl
-leith.stocks << msft
-leith.stocks << hpe
-leith.stocks << sony
-leith.stocks << race
+# puts 'Building portfolios...'
+# leith.stocks << aapl
+# leith.stocks << msft
+# leith.stocks << hpe
+# leith.stocks << sony
+# leith.stocks << race
 
-jim.stocks << tsla
-jim.stocks << msft
-jim.stocks << aapl
-jim.stocks << hpe
+# jim.stocks << tsla
+# jim.stocks << msft
+# jim.stocks << aapl
+# jim.stocks << hpe
 
-
-puts 'Done!'
+# puts 'Done!'
