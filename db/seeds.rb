@@ -17,16 +17,16 @@ CSV.foreach('lib/seeds/nasdaq_screener_1664808689118.csv', headers: true) do |ro
   Stock.create!(symbol: row[0].to_s, name: row[1].to_s)
 end
 
-# puts 'Building portfolios...'
-# leith.stocks << aapl
-# leith.stocks << msft
-# leith.stocks << hpe
-# leith.stocks << sony
-# leith.stocks << race
+puts 'Building portfolios...'
+leith.stocks << Stock.find_by(symbol: 'AAPL')
+leith.stocks << Stock.find_by(symbol: 'MSFT')
+leith.stocks << Stock.find_by(symbol: 'HPE')
+leith.stocks << Stock.find_by(symbol: 'SONY')
+leith.stocks << Stock.find_by(symbol: 'RACE')
 
-# jim.stocks << tsla
-# jim.stocks << msft
-# jim.stocks << aapl
-# jim.stocks << hpe
+jim.stocks << Stock.find_by(symbol: 'TSLA')
+jim.stocks << Stock.find_by(symbol: 'MSFT')
+jim.stocks << Stock.find_by(symbol: 'AAPL')
+jim.stocks << Stock.find_by(symbol: 'HPE')
 
-# puts 'Done!'
+puts 'Done!'
