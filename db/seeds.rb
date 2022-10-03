@@ -15,15 +15,24 @@ leith = User.create!(username: 'Leith', email: 'leith.atia@gmail.com', password:
 jim = User.create!(username: 'Jim', email: 'jim@gmail.com', password: 'password')
 
 puts 'Creating stocks...'
-leith.stocks.create!(ticker: 'AAPL')
-leith.stocks.create!(ticker: 'MSFT')
-leith.stocks.create!(ticker: 'TSLA')
-leith.stocks.create!(ticker: 'HPE')
-leith.stocks.create!(ticker: 'SONY')
+aapl = Stock.create!(ticker: 'AAPL')
+msft = Stock.create!(ticker: 'MSFT')
+tsla = Stock.create!(ticker: 'TSLA')
+hpe = Stock.create!(ticker: 'HPE')
+sony = Stock.create!(ticker: 'SONY')
+race = Stock.create!(ticker: 'RACE')
 
-jim.stocks.create!(ticker: 'HYMFT')
-jim.stocks.create!(ticker: 'MSFT')
-jim.stocks.create!(ticker: 'RACE')
-jim.stocks.create!(ticker: 'HPE')
+puts 'Building portfolios...'
+leith.stocks << aapl
+leith.stocks << msft
+leith.stocks << hpe
+leith.stocks << sony
+leith.stocks << race
+
+jim.stocks << tsla
+jim.stocks << msft
+jim.stocks << aapl
+jim.stocks << hpe
+
 
 puts 'Done!'
