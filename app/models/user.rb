@@ -7,5 +7,5 @@ class User < ApplicationRecord
   has_many :portfolios
   has_many :stocks, through: :portfolios
 
-  validates :username, presence: true, length: { minimum: 3 }
+  validates :username, presence: true, length: { minimum: 3 }, uniqueness: { case_sensitive: false }
 end
