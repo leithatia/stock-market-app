@@ -1,7 +1,7 @@
 <h1>Top 100 stocks</h1>
 
 
-<% @stocks.each do |stock| %>
+<% @top_stocks.each do |stock| %>
   <ul>
     <li><%= image_tag "#{stock[:logo_URL]}" %> <%= link_to "#{stock[:name]}", stock_path(stock[:symbol]) %>
         <%= " - #{stock[:symbol]}" %></li>

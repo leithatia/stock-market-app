@@ -5,14 +5,19 @@ class StocksController < ApplicationController
   end
 
   def show
+    ticker = params[:id]
+    @stock = Stock.find_by(symbol: ticker)
+  end
 
+  def my_stocks
+    @my_stocks = current_user.stocks
   end
 
   private
 
   def read_stocks
     # Get all rows from html table containing stock info
-    @stocks = []
+    @top_stocks = []
     rows = parse_html
 
     # Grab stock data from each row leaving out table header
@@ -42,7 +47,7 @@ class StocksController < ApplicationController
   end
 
   def write_stocks(company_symbol, company_name, company_logo, stock_price, change_1d_percentage, change_1d_currency)
-    @stocks.push({
+    @top_stocks.push({
                    symbol: company_symbol.text.strip,
                    name: company_name.text.strip,
                    logo_URL: company_logo,
