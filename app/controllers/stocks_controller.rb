@@ -5,7 +5,7 @@ class StocksController < ApplicationController
   end
 
   def show
-    
+
   end
 
   private
@@ -17,12 +17,13 @@ class StocksController < ApplicationController
 
     # Grab stock data from each row leaving out table header
     rows.drop(1).each do |row|
+      company_symbol = row.search(".tickerName-hMpTPJiS")
       company_name = row.search(".tickerDescription-hMpTPJiS")
       company_logo = row.search(".tv-circle-logo").attr('src')
       stock_price = row.search(".right-TKkxf89L")
       change_1d_percentage = row.search(".positive-C2C2Vilj")
       change_1d_currency = row.search(".positive-avn2kVRm")
-      write_stocks(company_name, company_logo, stock_price, change_1d_percentage, change_1d_currency)
+      write_stocks(company_symbol, company_name, company_logo, stock_price, change_1d_percentage, change_1d_currency)
     end
   end
 
@@ -40,8 +41,9 @@ class StocksController < ApplicationController
     table.search("tr")
   end
 
-  def write_stocks(company_name, company_logo, stock_price, change_1d_percentage, change_1d_currency)
+  def write_stocks(company_symbol, company_name, company_logo, stock_price, change_1d_percentage, change_1d_currency)
     @stocks.push({
+                   symbol: company_symbol.text.strip,
                    name: company_name.text.strip,
                    logo_URL: company_logo,
                    price: stock_price.text.strip.match(/\d*.\d*(?=USD)/),
