@@ -1,7 +1,7 @@
 class StocksController < ApplicationController
   def index
     # @user = nil
-    read_stocks
+    find_top_stocks
   end
 
   def show
@@ -15,28 +15,24 @@ class StocksController < ApplicationController
 
   private
 
-  def read_stocks
-    # Get all rows from html table containing stock info
+  def find_top_stocks
+    # Get 100 rows from html table containing stock info of biggest global companies
     @top_stocks = []
-    rows = parse_html
+    rows = parse_html("https://www.tradingview.com/markets/stocks-usa/market-movers-large-cap/")
 
-    # Grab stock data from each row leaving out table header
+    # Grab stock symbol from each row leaving out table header
     rows.drop(1).each do |row|
-      company_symbol = row.search(".tickerName-hMpTPJiS")
-      company_name = row.search(".tickerDescription-hMpTPJiS")
-      company_logo = row.search(".tv-circle-logo").attr('src')
-      stock_price = row.search(".right-TKkxf89L")
-      change_1d_percentage = row.search(".positive-C2C2Vilj")
-      change_1d_currency = row.search(".positive-avn2kVRm")
-      write_stocks(company_symbol, company_name, company_logo, stock_price, change_1d_percentage, change_1d_currency)
+      stock_symbol = row.search(".tickerName-hMpTPJiS")
+      @top_stocks << Stock.find_by(symbol: stock_symbol.text.strip)
     end
+    @top_stocks
   end
 
-  def parse_html
+  def parse_html(url)
     require "nokogiri"
     require "open-uri"
 
-    url = "https://www.tradingview.com/markets/stocks-usa/market-movers-large-cap/"
+    # url = "https://www.tradingview.com/markets/stocks-usa/market-movers-large-cap/"
 
     html_file = URI.parse(url).open.read
     html_doc = Nokogiri::HTML(html_file)
@@ -46,14 +42,14 @@ class StocksController < ApplicationController
     table.search("tr")
   end
 
-  def write_stocks(company_symbol, company_name, company_logo, stock_price, change_1d_percentage, change_1d_currency)
-    @top_stocks.push({
-                   symbol: company_symbol.text.strip,
-                   name: company_name.text.strip,
-                   logo_URL: company_logo,
-                   price: stock_price.text.strip.match(/\d*.\d*(?=USD)/),
-                   change_percent: change_1d_percentage.text.strip,
-                   change_currency: change_1d_currency.text.strip
-                 })
-  end
+  # def write_stocks(company_symbol, company_name, company_logo, stock_price, change_1d_percentage, change_1d_currency)
+  #   @top_stocks.push({
+  #                  symbol: company_symbol.text.strip,
+  #                  name: company_name.text.strip,
+  #                  logo_URL: company_logo,
+  #                  price: stock_price.text.strip.match(/\d*.\d*(?=USD)/),
+  #                  change_percent: change_1d_percentage.text.strip,
+  #                  change_currency: change_1d_currency.text.strip
+  #                })
+  # end
 end
