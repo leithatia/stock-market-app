@@ -1,12 +1,13 @@
 class StocksController < ApplicationController
+  before_action :authenticate_user!
+  
   def index
     # @user = nil
     find_top_stocks
   end
 
   def show
-    ticker = params[:id]
-    @stock = Stock.find_by(symbol: ticker)
+    @stock = Stock.find(params[:id])
   end
 
   def my_stocks
