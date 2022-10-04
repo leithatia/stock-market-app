@@ -14,7 +14,9 @@ jim = User.create!(username: 'Jim', email: 'jim@gmail.com', password: 'password'
 
 puts 'Creating stocks...'
 CSV.foreach('lib/seeds/nasdaq_screener_1664808689118.csv', headers: true) do |row|
-  Stock.create!(symbol: row[0].to_s, name: row[1].to_s)
+  stock_symbol = row[0].to_s.gsub(/[\/\^]/, '.')
+  stock_name = row[1].to_s
+  Stock.create!(symbol: stock_symbol, name: stock_name)
 end
 
 puts 'Building portfolios...'

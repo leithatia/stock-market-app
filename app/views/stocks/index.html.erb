@@ -1,13 +1,5 @@
 <h1>Top 100 stocks</h1>
 
-
 <% @top_stocks.each do |stock| %>
-  <ul>
-    <li><%= image_tag "#{stock[:logo_URL]}" %> <%= link_to "#{stock[:name]}", stock_path(stock[:symbol]) %>
-        <%= " - #{stock[:symbol]}" %></li>
-    <li><%= "Price: #{stock[:price]}" %></li>
-    <li><%= "1D Change (%): #{stock[:change_percent]}" %></li>
-    <li><%= "1D Change (USD): #{stock[:change_currency]}" %></li>
-  </ul>
-
+  <ul><%= link_to stock[:name], stock_path(stock) %></ul>
 <% end %>
