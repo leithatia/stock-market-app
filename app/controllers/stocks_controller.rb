@@ -7,7 +7,8 @@ class StocksController < ApplicationController
   end
 
   def show
-    @stock = Stock.find(params[:id])
+    stock = Stock.find(params[:id])
+    find_stock(stock)
   end
 
   def my_stocks
@@ -15,6 +16,24 @@ class StocksController < ApplicationController
   end
 
   private
+
+  def find_stock(stock)
+    # html_doc = parse_html("https://seekingalpha.com/symbol/KALV")
+    html_doc = parse_html("https://seekingalpha.com/symbol/#{stock[:symbol]}")
+    node = html_doc.search(".cardsLayout")
+    price_and_change = node.text.scan(/\$\d*.\d*.\d*.\d\d/).first.split('.', 2)
+    price_cents = price_and_change[1][0, 2]
+    stock_price = "#{price_and_change[0]}.#{price_cents}"
+    stock_chg_1d_currency = price_and_change[1][2..]
+
+    @stock = {
+      name: stock[:name],
+      symbol: stock[:symbol],
+      price: stock_price,
+      chg_1d_currency: stock_chg_1d_currency
+    }
+    # raise
+  end
 
   def find_top_stocks
     # Get 100 rows from html table containing stock info of biggest global companies
