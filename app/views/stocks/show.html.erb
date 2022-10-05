@@ -4,5 +4,6 @@
   <li>Name: <%= @stock[:name] %></li>
   <li>Symbol: <%= @stock[:symbol] %></li>
   <li>Price: <%= @stock[:price] %></li>
-  <li>1d change: <%= @stock[:chg_1d_currency] %></li>
+  <li>1d change : $<%= @stock[:chg_1d_currency] %></li>
+  <li>1d change: <%= @stock[:chg_1d_percent] %>%</li>
 </ul>

@@ -21,16 +21,20 @@ class StocksController < ApplicationController
     # html_doc = parse_html("https://seekingalpha.com/symbol/KALV")
     html_doc = parse_html("https://seekingalpha.com/symbol/#{stock[:symbol]}")
     node = html_doc.search(".cardsLayout")
+
     price_and_change = node.text.scan(/\$\d*.\d*.\d*.\d\d/).first.split('.', 2)
     price_cents = price_and_change[1][0, 2]
     stock_price = "#{price_and_change[0]}.#{price_cents}"
     stock_chg_1d_currency = price_and_change[1][2..]
 
+    stock_chg_1d_percent = node.text.scan(/\(.\d.\d\d/).first[1..]
+
     @stock = {
       name: stock[:name],
       symbol: stock[:symbol],
       price: stock_price,
-      chg_1d_currency: stock_chg_1d_currency
+      chg_1d_currency: stock_chg_1d_currency,
+      chg_1d_percent: stock_chg_1d_percent
     }
     # raise
   end
