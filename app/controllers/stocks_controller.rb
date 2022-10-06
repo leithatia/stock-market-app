@@ -26,7 +26,6 @@ class StocksController < ApplicationController
     stock_price = "#{price_and_change[0]}.#{price_cents}"
     stock_chg_1d_currency = price_and_change[1][2..]
     stock_chg_1d_percent = node.text.scan(/\(.\d.\d\d/).first[1..]
-    # @stock_history = stock_history(stock)
 
     @stock = {
       name: stock[:name],
