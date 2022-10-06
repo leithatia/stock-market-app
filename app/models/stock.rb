@@ -1,6 +1,5 @@
 class Stock < ApplicationRecord
-  has_many :portfolios
-  has_many :users, through: :portfolios
+  belongs_to :users
 
-  validates :symbol, :name, presence: true
+  validates :symbol, presence: true
 end
