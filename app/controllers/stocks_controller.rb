@@ -18,7 +18,6 @@ class StocksController < ApplicationController
   private
 
   def find_stock(stock)
-    # html_doc = parse_html("https://seekingalpha.com/symbol/KALV")
     html_doc = parse_html("https://seekingalpha.com/symbol/#{stock[:symbol]}")
     node = html_doc.search(".cardsLayout")
 
@@ -26,15 +25,16 @@ class StocksController < ApplicationController
     price_cents = price_and_change[1][0, 2]
     stock_price = "#{price_and_change[0]}.#{price_cents}"
     stock_chg_1d_currency = price_and_change[1][2..]
-
     stock_chg_1d_percent = node.text.scan(/\(.\d.\d\d/).first[1..]
+    # @stock_history = stock_history(stock)
 
     @stock = {
       name: stock[:name],
       symbol: stock[:symbol],
       price: stock_price,
       chg_1d_currency: stock_chg_1d_currency,
-      chg_1d_percent: stock_chg_1d_percent
+      chg_1d_percent: stock_chg_1d_percent,
+      history: stock_history(stock)
     }
     # raise
   end
@@ -54,6 +54,12 @@ class StocksController < ApplicationController
     end
   end
 
+  def stock_history(stock)
+    url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=#{stock[:symbol]}&outputsize=full&apikey=DAU6SET7OA7BPMCC"
+    data_serialized = URI.open(url).read
+    JSON.parse(data_serialized)["Time Series (Daily)"]
+  end
+
   def parse_html(url)
     require "nokogiri"
     require "open-uri"
@@ -61,15 +67,4 @@ class StocksController < ApplicationController
     html_file = URI.parse(url).open.read
     Nokogiri::HTML(html_file)
   end
-
-  # def write_stocks(company_symbol, company_name, company_logo, stock_price, change_1d_percentage, change_1d_currency)
-  #   @top_stocks.push({
-  #                  symbol: company_symbol.text.strip,
-  #                  name: company_name.text.strip,
-  #                  logo_URL: company_logo,
-  #                  price: stock_price.text.strip.match(/\d*.\d*(?=USD)/),
-  #                  change_percent: change_1d_percentage.text.strip,
-  #                  change_currency: change_1d_currency.text.strip
-  #                })
-  # end
 end
