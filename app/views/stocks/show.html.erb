@@ -6,4 +6,10 @@
   <li>Price: <%= @stock[:price] %></li>
   <li>1d change : $<%= @stock[:chg_1d_currency] %></li>
   <li>1d change: <%= @stock[:chg_1d_percent] %>%</li>
+  <br>
+
+  <% @stock[:history].each do |key, value| %>
+    <p><%= "Date: #{key} \tPrice: #{value["4. close"][0..-3]}" %></p>
+
+  <% end %>
 </ul>
