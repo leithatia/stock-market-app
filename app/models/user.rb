@@ -4,8 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :portfolios
-  has_many :stocks, through: :portfolios
+  has_many :stocks
 
   validates :username, presence: true, length: { minimum: 3 }, uniqueness: { case_sensitive: false }
 end
